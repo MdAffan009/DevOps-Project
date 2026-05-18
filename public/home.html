@@ -1,10 +1,251 @@
 <!DOCTYPE html>
-<html>
-<head><title>Home</title></head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Home</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      font-family: 'DM Sans', sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      background-size: 400% 400%;
+      animation: gradShift 10s ease infinite;
+      color: #fff;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    @keyframes gradShift {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.2;
+      animation: float 8s ease-in-out infinite;
+      pointer-events: none;
+    }
+    .blob1 { width: 400px; height: 400px; background: #54a0ff; top: -100px; left: -100px; }
+    .blob2 { width: 300px; height: 300px; background: #ff9ff3; bottom: -80px; right: -80px; animation-delay: 3s; }
+    .blob3 { width: 250px; height: 250px; background: #feca57; top: 40%; left: 60%; animation-delay: 5s; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50%       { transform: translateY(-30px) scale(1.05); }
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-brand {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 20px;
+      background: linear-gradient(135deg, #48dbfb, #ff9ff3);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .logout-btn {
+      padding: 10px 22px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 10px;
+      color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .logout-btn:hover {
+      background: rgba(255,107,107,0.2);
+      border-color: rgba(255,107,107,0.4);
+      color: #ffcaca;
+    }
+
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 100px 20px 60px;
+      position: relative;
+      z-index: 10;
+      animation: slideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    @keyframes slideUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 100px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 28px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-family: 'Syne', sans-serif;
+    }
+
+    .badge span {
+      width: 6px; height: 6px;
+      background: #54ff9f;
+      border-radius: 50%;
+      animation: pulse 2s ease infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.5; transform: scale(1.5); }
+    }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(42px, 7vw, 72px);
+      font-weight: 800;
+      line-height: 1.05;
+      margin-bottom: 20px;
+    }
+
+    h1 .gradient-text {
+      background: linear-gradient(135deg, #48dbfb 0%, #ff9ff3 50%, #feca57 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: 18px;
+      color: rgba(255,255,255,0.55);
+      font-weight: 300;
+      max-width: 460px;
+      line-height: 1.6;
+      margin-bottom: 48px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      max-width: 800px;
+      width: 100%;
+      padding: 0 20px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 10;
+      animation: slideUp 0.8s 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .card {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 20px;
+      padding: 28px 24px;
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      background: rgba(255,255,255,0.11);
+    }
+
+    .card-icon {
+      font-size: 28px;
+      margin-bottom: 14px;
+    }
+
+    .card h3 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+
+    .card p {
+      font-size: 14px;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.6;
+      font-weight: 300;
+    }
+
+    .card-accent {
+      width: 40px;
+      height: 3px;
+      border-radius: 2px;
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
 <body>
-  <h2>Welcome!</h2>
-  <p>You are logged in.</p>
-  <button onclick="logout()">Logout</button>
+  <div class="blob blob1"></div>
+  <div class="blob blob2"></div>
+  <div class="blob blob3"></div>
+
+  <nav>
+    <div class="nav-brand">DevOps App</div>
+    <button class="logout-btn" onclick="logout()">Sign Out</button>
+  </nav>
+
+  <div class="hero">
+    <div class="badge"><span></span> You're logged in</div>
+    <h1>Welcome to your<br/><span class="gradient-text">Dashboard</span></h1>
+    <p class="hero-sub">Your app is live, your database is connected, and you're ready to ship.</p>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <div class="card-accent" style="background: linear-gradient(90deg, #48dbfb, #54a0ff);"></div>
+      <div class="card-icon">🐳</div>
+      <h3>Docker</h3>
+      <p>Containerize this app and get it running with a single command.</p>
+    </div>
+    <div class="card">
+      <div class="card-accent" style="background: linear-gradient(90deg, #ff9ff3, #c471ed);"></div>
+      <div class="card-icon">☸️</div>
+      <h3>Kubernetes</h3>
+      <p>Orchestrate your containers and scale effortlessly in production.</p>
+    </div>
+    <div class="card">
+      <div class="card-accent" style="background: linear-gradient(90deg, #feca57, #ff6b6b);"></div>
+      <div class="card-icon">⚙️</div>
+      <h3>CI/CD</h3>
+      <p>Automate your builds and deployments with a solid pipeline.</p>
+    </div>
+  </div>
 
   <script>
     if (!localStorage.getItem('token')) window.location.href = '/login.html';

@@ -1,15 +1,226 @@
 <!DOCTYPE html>
-<html>
-<head><title>Login</title></head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --card-bg: rgba(255,255,255,0.12);
+      --card-border: rgba(255,255,255,0.25);
+      --input-bg: rgba(255,255,255,0.15);
+      --input-border: rgba(255,255,255,0.3);
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: 'DM Sans', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #12c2e9 0%, #c471ed 50%, #f64f59 100%);
+      background-size: 400% 400%;
+      animation: gradShift 8s ease infinite;
+      overflow: hidden;
+      position: relative;
+    }
+
+    @keyframes gradShift {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.35;
+      animation: float 6s ease-in-out infinite;
+    }
+    .blob1 { width: 320px; height: 320px; background: #54a0ff; top: -60px; right: -60px; animation-delay: 0s; }
+    .blob2 { width: 250px; height: 250px; background: #ff9ff3; bottom: -50px; left: -50px; animation-delay: 2s; }
+    .blob3 { width: 180px; height: 180px; background: #feca57; top: 40%; right: 15%; animation-delay: 3.5s; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) scale(1); }
+      50%       { transform: translateY(-25px) scale(1.05); }
+    }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 48px 40px;
+      width: 100%;
+      max-width: 420px;
+      position: relative;
+      z-index: 10;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+      animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    @keyframes slideUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .brand {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 13px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand::before {
+      content: '';
+      display: inline-block;
+      width: 20px;
+      height: 3px;
+      background: linear-gradient(90deg, #48dbfb, #c471ed);
+      border-radius: 2px;
+    }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 36px;
+      color: #fff;
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: rgba(255,255,255,0.65);
+      font-size: 15px;
+      margin-bottom: 36px;
+      font-weight: 300;
+    }
+
+    .field { margin-bottom: 18px; }
+
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 8px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px 18px;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: 12px;
+      color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      outline: none;
+      transition: all 0.25s ease;
+    }
+
+    input::placeholder { color: rgba(255,255,255,0.4); }
+
+    input:focus {
+      border-color: rgba(255,255,255,0.6);
+      background: rgba(255,255,255,0.2);
+      box-shadow: 0 0 0 4px rgba(255,255,255,0.1);
+    }
+
+    button {
+      width: 100%;
+      padding: 16px;
+      margin-top: 8px;
+      background: linear-gradient(135deg, #48dbfb, #c471ed);
+      border: none;
+      border-radius: 12px;
+      color: #fff;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    button:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(196,113,237,0.45); }
+    button:active { transform: translateY(0); }
+
+    .footer-text {
+      text-align: center;
+      margin-top: 24px;
+      color: rgba(255,255,255,0.6);
+      font-size: 14px;
+    }
+
+    .footer-text a {
+      color: #48dbfb;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .footer-text a:hover { color: #fff; }
+
+    .msg {
+      margin-top: 14px;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 14px;
+      text-align: center;
+      display: none;
+    }
+    .msg.success { background: rgba(84,224,128,0.2); border: 1px solid rgba(84,224,128,0.4); color: #afffcb; display: block; }
+    .msg.error   { background: rgba(255,107,107,0.2); border: 1px solid rgba(255,107,107,0.4); color: #ffcaca; display: block; }
+  </style>
+</head>
 <body>
-  <h2>Login</h2>
-  <input id="email" placeholder="Email" /><br>
-  <input id="password" type="password" placeholder="Password" /><br>
-  <button onclick="login()">Login</button>
-  <p><a href="/signup.html">Don't have an account? Signup</a></p>
+  <div class="blob blob1"></div>
+  <div class="blob blob2"></div>
+  <div class="blob blob3"></div>
+
+  <div class="card">
+    <div class="brand">DevOps App</div>
+    <h1>Welcome back</h1>
+    <p class="subtitle">Sign in to continue</p>
+
+    <div class="field">
+      <label>Email</label>
+      <input id="email" type="email" placeholder="Enter your email" />
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input id="password" type="password" placeholder="Enter your password" />
+    </div>
+
+    <button onclick="login()">Sign In</button>
+    <div id="msg" class="msg"></div>
+
+    <p class="footer-text">Don't have an account? <a href="/signup.html">Sign up</a></p>
+  </div>
 
   <script>
     async function login() {
+      const msg = document.getElementById('msg');
+      msg.className = 'msg';
+      msg.textContent = '';
       const res = await fetch('/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -19,10 +230,14 @@
         })
       });
       const data = await res.json();
-      alert(data.message);
       if (res.ok) {
+        msg.className = 'msg success';
+        msg.textContent = 'Login successful! Redirecting...';
         localStorage.setItem('token', data.token);
-        window.location.href = '/home.html';
+        setTimeout(() => window.location.href = '/home.html', 1000);
+      } else {
+        msg.className = 'msg error';
+        msg.textContent = data.message;
       }
     }
   </script>
