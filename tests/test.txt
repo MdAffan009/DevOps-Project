@@ -1,0 +1,8 @@
+I wrote the tests using Jest and Supertest.
+To write the test, First I installed mongodb-memory-server, which is a package that installs real Mongo-DB server on the memory.
+It gives a URI which can be used to access mongoose, and the database which is much suffer than accessing the actual Atlas database.
+I wrote setup.js to configure the parameters for tests.
+Setup.js created the environment on which app.test.js ran all the tests.
+I ran very simple tests, like validating inputs, checking if the sites are serving, or ensuring that it is throwing error if someone wrote wrong password or username while logging in.
+I did not use any actual data, or connected to Atlas, all the data were mock garbage data.
+After the tests were complete, In setup.js I made sure that everything was cleaned up.
