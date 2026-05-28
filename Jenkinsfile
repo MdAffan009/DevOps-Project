@@ -33,6 +33,13 @@ pipeline {
             }
         }
 
+        stage('Debug Docker') {
+            steps {
+               sh 'echo $DOCKER_HOST'
+               sh 'docker version'
+            }
+}
+
         stage('Test Docker') {
             steps {
                 sh "docker ps"
