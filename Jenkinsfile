@@ -1,16 +1,16 @@
 pipeline {
+
     agent {
-        lable 'docker-agent-html'
+        label 'docker-agent-html'
     }
 
     triggers {
-    pollSCM('H/5 * * * *')
+        pollSCM('H/5 * * * *')
     }
-
 
     stages {
 
-        stage('checkout') {      
+        stage('Checkout') {
             steps {
                 checkout scm
             }
@@ -18,36 +18,35 @@ pipeline {
 
         stage('Build') {
             steps {
-                npm ci
+                sh 'npm ci'
             }
+        }
 
         stage('Test') {
             steps {
                 echo "Tests Script"
             }
+        }
 
         stage('Deploy') {
             steps {
                 echo "Deploy Script"
             }
         }
-        }
-        }
-        }
     }
 
     post {
+
         success {
             echo 'Pipeline completed successfully!'
-            }
+        }
 
         failure {
             echo 'Pipeline failed'
-           }
+        }
 
         always {
             cleanWs()
         }
     }
-
-
+}
