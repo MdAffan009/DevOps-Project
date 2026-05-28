@@ -23,8 +23,13 @@ pipeline {
         }
 
         stage('Test') {
+
+            when {
+                branch 'test'
+            }
+
             steps {
-                echo "Tests Script"
+                sh 'npm test'
             }
         }
 
