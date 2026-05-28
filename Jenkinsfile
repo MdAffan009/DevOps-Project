@@ -33,9 +33,15 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+        stage('Test Docker') {
             steps {
-                echo "Deploy Script"
+                sh "docker ps"
+            }
+        }
+
+        stage('Docker build') {
+            steps {
+                sh "docker build -t robinparker995/devops-project:${BUILD_NUMBER}" .
             }
         }
     }
