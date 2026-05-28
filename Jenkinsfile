@@ -25,9 +25,7 @@ pipeline {
         stage('Test') {
 
             when {
-                 expression {
-                 env.GIT_BRANCH == 'origin/test'
-                }
+                branch 'test'
             }
 
             steps {
