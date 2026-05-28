@@ -41,7 +41,7 @@ pipeline {
 
         stage('Docker build') {
             steps {
-                sh "docker build -t robinparker995/devops-project:${BUILD_NUMBER}" .
+                sh "docker build -t robinparker995/devops-project:${BUILD_NUMBER} ."
             }
         }
     }
