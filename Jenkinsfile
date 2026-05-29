@@ -34,13 +34,6 @@ pipeline {
             }
         }
 
-        stage('Debug Docker') {
-            steps {
-               sh 'echo $DOCKER_HOST'
-               sh 'docker version'
-            }
-}
-
         stage('Test Docker') {
             steps {
                 sh "docker ps"
@@ -72,6 +65,20 @@ pipeline {
             }
          }
     }
+
+        stage('Deploy') {
+            steps{
+                sh ''' 
+                docker pull robinparker995/devops-project:latest
+
+                docker stop myapp || true 
+                docker rm myapp || true
+
+                docker run -d --name myapp --env-file /home/jenkins/.env -p 3000:3000 robinparker995/devops-project:latest
+                
+                '''
+            }
+        }
     }
 
     post {
