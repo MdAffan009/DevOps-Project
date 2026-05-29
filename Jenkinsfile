@@ -49,9 +49,29 @@ pipeline {
 
         stage('Docker build') {
             steps {
-                sh "docker build -t robinparker995/devops-project:${BUILD_NUMBER} ."
+                sh "docker build -t robinparker995/devops-project:${BUILD_NUMBER} -t robinparker995/devops-project:latest ."
             }
         }
+
+        stage('Push Image') {
+        steps {
+            withCredentials([usernamePassword(
+             credentialsId: 'dockerhub-creds',
+             usernameVariable: 'DOCKER_USER',
+              passwordVariable: 'DOCKER_PASS'
+            )]) {
+            sh '''
+             echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+
+             docker push robinparker995/devops-project:${BUILD_NUMBER}
+
+             docker push robinparker995/devops-project:latest
+
+             docker logout
+             '''
+            }
+         }
+    }
     }
 
     post {
