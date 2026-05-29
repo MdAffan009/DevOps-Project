@@ -4,9 +4,6 @@ pipeline {
         label 'docker-agent-html'
     }
 
-    environment {
-    DOCKER_HOST = 'tcp://docker-daemon:2375'
-    }
 
     triggers {
         pollSCM('H/5 * * * *')
