@@ -66,7 +66,7 @@ pipeline {
 
             git merge --no-ff origin/test -m "Merge Test into Exp"
 
-            git push origin exp
+            git push https://${GIT_USER}:${GIT_PASS}@github.com/MdAffan009/DevOps-Project.git exp
             '''
             }
         }
