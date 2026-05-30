@@ -63,8 +63,8 @@ pipeline {
             git config user.email "mdaffan0502@gmail.com"
             git config user.name "MdAffan009"
 
-            git fetch origin main
-            git fetch origin test
+            git fetch origin +refs/heads/main:refs/remotes/origin/main
+            git fetch origin +refs/heads/test:refs/remotes/origin/test
 
             if git ls-remote --exit-code --heads origin main; then
                 git checkout -B main origin/main
