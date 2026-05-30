@@ -72,7 +72,7 @@ pipeline {
                 git checkout -b main
             fi
 
-            git merge --no-ff origin/test
+             git merge --no-ff -X theirs origin/test -m "Merge test into main"
 
             git push https://${GIT_USER}:${GIT_PASS}@github.com/MdAffan009/DevOps-Project.git main
             '''
