@@ -61,12 +61,11 @@ pipeline {
 
             git fetch origin
 
-            git checkout -B exp
-            git pull origin exp
+            git checkout -B main origin/main
 
-            git merge --no-ff origin/test -m "Merge Test into Exp"
+            git merge --no-ff origin/test
 
-            git push https://${GIT_USER}:${GIT_PASS}@github.com/MdAffan009/DevOps-Project.git exp
+            git push https://${GIT_USER}:${GIT_PASS}@github.com/MdAffan009/DevOps-Project.git main
             '''
             }
         }
