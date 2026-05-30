@@ -46,7 +46,7 @@ pipeline {
          branch 'test'
         }
 
-        
+
       steps {
 
         withCredentials([usernamePassword(
@@ -66,7 +66,7 @@ pipeline {
 
             git merge --no-ff origin/test -m "Merge Test into Exp"
 
-            git push https://${GIT_USER}:${GIT_PASS}@github.com/USERNAME/REPO.git exp
+            git push origin exp
             '''
             }
         }
