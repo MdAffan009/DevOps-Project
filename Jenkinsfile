@@ -35,6 +35,11 @@ pipeline {
         }
 
    stage('Approval') {
+    
+    when{
+        branch 'test'
+    }
+
     steps {
         input message: 'Approve merge?', ok: 'Merge'
         }
@@ -45,7 +50,6 @@ pipeline {
       when {
          branch 'test'
         }
-
 
       steps {
 
@@ -59,11 +63,16 @@ pipeline {
             git config user.email "mdaffan0502@gmail.com"
             git config user.name "MdAffan009"
 
-            git fetch origin
+            git fetch origin +refs/heads/main:refs/remotes/origin/main
+            git fetch origin +refs/heads/test:refs/remotes/origin/test
 
-            git checkout -B main origin/main
+            if git ls-remote --exit-code --heads origin main; then
+                git checkout -B main origin/main
+            else
+                git checkout -b main
+            fi
 
-            git merge --no-ff origin/test
+             git merge --no-ff -X theirs origin/test -m "Merge test into main"
 
             git push https://${GIT_USER}:${GIT_PASS}@github.com/MdAffan009/DevOps-Project.git main
             '''
@@ -73,18 +82,33 @@ pipeline {
 
         //CD
         stage('Test Docker') {
+            
+            when {
+                branch 'main'
+            }
+
+
             steps {
                 sh "docker ps"
             }
         }
 
         stage('Docker build') {
+            when {
+                branch 'main'
+            }
+
             steps {
                 sh "docker build -t robinparker995/devops-project:${BUILD_NUMBER} -t robinparker995/devops-project:latest ."
             }
         }
 
         stage('Push Image') {
+
+        when {
+            branch 'main'
+        }
+
         steps {
             withCredentials([usernamePassword(
              credentialsId: 'dockerhub-creds',
@@ -103,6 +127,11 @@ pipeline {
     }
 
         stage('Deploy') {
+
+            when {
+                branch 'main'
+            }
+            
             steps{
                 sh ''' 
                 docker pull robinparker995/devops-project:latest
