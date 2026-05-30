@@ -35,6 +35,11 @@ pipeline {
         }
 
    stage('Approval') {
+    
+    when{
+        branch 'test'
+    }
+
     steps {
         input message: 'Approve merge?', ok: 'Merge'
         }
@@ -45,7 +50,6 @@ pipeline {
       when {
          branch 'test'
         }
-
 
       steps {
 
@@ -73,18 +77,33 @@ pipeline {
 
         //CD
         stage('Test Docker') {
+            
+            when {
+                branch 'main'
+            }
+
+
             steps {
                 sh "docker ps"
             }
         }
 
         stage('Docker build') {
+            when {
+                branch 'main'
+            }
+
             steps {
                 sh "docker build -t robinparker995/devops-project:${BUILD_NUMBER} -t robinparker995/devops-project:latest ."
             }
         }
 
         stage('Push Image') {
+
+        when {
+            branch 'main'
+        }
+
         steps {
             withCredentials([usernamePassword(
              credentialsId: 'dockerhub-creds',
@@ -103,6 +122,11 @@ pipeline {
     }
 
         stage('Deploy') {
+
+            when {
+                branch 'main'
+            }
+            
             steps{
                 sh ''' 
                 docker pull robinparker995/devops-project:latest
