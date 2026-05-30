@@ -63,7 +63,7 @@ pipeline {
             git config user.email "mdaffan0502@gmail.com"
             git config user.name "MdAffan009"
 
-            git fetch -all
+            git fetch --all
 
             git checkout -B main origin/main
 
