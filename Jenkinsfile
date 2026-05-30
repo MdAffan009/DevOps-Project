@@ -65,7 +65,11 @@ pipeline {
 
             git fetch --all
 
-            git checkout -B main origin/main
+            if git ls-remote --exit-code --heads origin main; then
+                git checkout -B main origin/main
+            else
+                git checkout -b main
+            fi
 
             git merge --no-ff origin/test
 
