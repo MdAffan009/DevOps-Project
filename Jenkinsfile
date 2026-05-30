@@ -10,7 +10,7 @@ pipeline {
     }
 
     stages {
-
+        //CI
         stage('Checkout') {
             steps {
                 checkout scm
@@ -34,6 +34,45 @@ pipeline {
             }
         }
 
+   stage('Approval') {
+    steps {
+        input message: 'Approve merge?', ok: 'Merge'
+        }
+    }   
+
+    stage('Merge') {
+
+      when {
+         branch 'test'
+        }
+
+        
+      steps {
+
+        withCredentials([usernamePassword(
+            credentialsId: 'github-creds',
+            usernameVariable: 'GIT_USER',
+            passwordVariable: 'GIT_PASS'
+        )]) {
+
+            sh '''
+            git config user.email "mdaffan0502@gmail.com"
+            git config user.name "MdAffan009"
+
+            git fetch origin
+
+            git checkout -B exp
+            git pull origin exp
+
+            git merge --no-ff origin/test -m "Merge Test into Exp"
+
+            git push https://${GIT_USER}:${GIT_PASS}@github.com/USERNAME/REPO.git exp
+            '''
+            }
+        }
+    }
+
+        //CD
         stage('Test Docker') {
             steps {
                 sh "docker ps"
@@ -59,8 +98,6 @@ pipeline {
              docker push robinparker995/devops-project:${BUILD_NUMBER}
 
              docker push robinparker995/devops-project:latest
-
-             docker logout
              '''
             }
          }
@@ -92,6 +129,7 @@ pipeline {
         }
 
         always {
+            sh 'docker logout'
             cleanWs()
         }
     }
