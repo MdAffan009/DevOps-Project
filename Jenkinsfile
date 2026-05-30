@@ -64,7 +64,7 @@ pipeline {
             git config user.name "MdAffan009"
 
             git fetch origin main
-            git fetch orign test
+            git fetch origin test
 
             if git ls-remote --exit-code --heads origin main; then
                 git checkout -B main origin/main
