@@ -34,29 +34,6 @@ pipeline {
             }
         }
 
-             stage('K8s Debug') {
-         when {
-        branch 'test'
-         }
- 
-       steps {
-        sh '''
-            echo "===== KUBECTL ====="
-            kubectl version --client
-
-            echo "===== CONTEXT ====="
-            kubectl config current-context || true
-
-            echo "===== CLUSTER ====="
-            kubectl cluster-info || true
-
-            echo "===== CONFIG ====="
-            kubectl config view || true
-        '''
-        }
-    }
-
-
    stage('Approval') {
     
     when{
@@ -139,18 +116,28 @@ pipeline {
          }
     }
 
-        stage('Deploy') {
+    stage('Deploy') {
 
-            when {
-                branch 'main'
-            }
-            
-            steps{
-                sh ''' 
-                    kubectl apply -f k8/
-                    kubectl rollout status deployment/app-deployment  
+        when {
+          branch 'main'
+        }
 
-                '''
+        steps {
+
+            withCredentials([
+               file(
+                    credentialsId: 'kubeconfig',
+                    variable: 'KUBECONFIG'
+                )
+            ]) {
+
+            sh '''
+                kubectl config current-context
+                kubectl cluster-info
+
+                kubectl apply -f k8/
+                kubectl rollout status deployment/app-deployment
+            '''
             }
         }
     }
