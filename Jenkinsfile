@@ -81,18 +81,6 @@ pipeline {
     }
 
         //CD
-        stage('Test Docker') {
-            
-            when {
-                branch 'main'
-            }
-
-
-            steps {
-                sh "docker ps"
-            }
-        }
-
         stage('Docker build') {
             when {
                 branch 'main'
@@ -134,13 +122,9 @@ pipeline {
             
             steps{
                 sh ''' 
-                docker pull robinparker995/devops-project:latest
+                    kubectl apply -f k8/
+                    kubectl rollout status deployment/app-deployment  
 
-                docker stop myapp || true 
-                docker rm myapp || true
-
-                docker run -d --name myapp --env-file /home/jenkins/.env -p 3000:3000 robinparker995/devops-project:latest
-                
                 '''
             }
         }
@@ -157,7 +141,7 @@ pipeline {
         }
 
         always {
-            sh 'docker logout'
+            sh 'docker logout || true'
             cleanWs()
         }
     }
