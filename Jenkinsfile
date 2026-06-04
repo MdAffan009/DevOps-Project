@@ -34,6 +34,29 @@ pipeline {
             }
         }
 
+             stage('K8s Debug') {
+         when {
+        branch 'test'
+         }
+ 
+       steps {
+        sh '''
+            echo "===== KUBECTL ====="
+            kubectl version --client
+
+            echo "===== CONTEXT ====="
+            kubectl config current-context || true
+
+            echo "===== CLUSTER ====="
+            kubectl cluster-info || true
+
+            echo "===== CONFIG ====="
+            kubectl config view || true
+        '''
+        }
+    }
+
+
    stage('Approval') {
     
     when{
@@ -81,27 +104,7 @@ pipeline {
     }
 
         //CD
-        stage('K8s Debug') {
-         when {
-        branch 'test'
-         }
- 
-       steps {
-        sh '''
-            echo "===== KUBECTL ====="
-            kubectl version --client
-
-            echo "===== CONTEXT ====="
-            kubectl config current-context || true
-
-            echo "===== CLUSTER ====="
-            kubectl cluster-info || true
-
-            echo "===== CONFIG ====="
-            kubectl config view || true
-        '''
-        }
-    }
+   
 
         stage('Docker build') {
             when {
