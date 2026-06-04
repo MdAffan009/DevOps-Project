@@ -83,7 +83,7 @@ pipeline {
         //CD
         stage('K8s Debug') {
          when {
-        branch 'main'
+        branch 'test'
          }
  
        steps {
