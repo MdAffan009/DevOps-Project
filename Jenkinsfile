@@ -81,6 +81,8 @@ pipeline {
     }
 
         //CD
+   
+
         stage('Docker build') {
             when {
                 branch 'main'
@@ -114,18 +116,28 @@ pipeline {
          }
     }
 
-        stage('Deploy') {
+    stage('Deploy') {
 
-            when {
-                branch 'main'
-            }
-            
-            steps{
-                sh ''' 
-                    kubectl apply -f k8/
-                    kubectl rollout status deployment/app-deployment  
+        when {
+          branch 'main'
+        }
 
-                '''
+        steps {
+
+            withCredentials([
+               file(
+                    credentialsId: 'kubeconfig',
+                    variable: 'KUBECONFIG'
+                )
+            ]) {
+
+            sh '''
+                kubectl config current-context
+                kubectl cluster-info
+
+                kubectl apply -f k8/
+                kubectl rollout status deployment/app-deployment
+            '''
             }
         }
     }
