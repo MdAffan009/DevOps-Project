@@ -34,6 +34,21 @@ pipeline {
             }
         }
 
+
+    stage('Network Debug') {
+    steps {
+        sh '''
+            echo "Testing Minikube API..."
+
+            ping -c 3 192.168.49.2 || true
+
+            nc -zv 192.168.49.2 8443 || true
+
+            curl -k https://192.168.49.2:8443/version || true
+        '''
+        }
+    }
+
    stage('Approval') {
     
     when{
