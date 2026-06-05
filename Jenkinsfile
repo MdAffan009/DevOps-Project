@@ -34,6 +34,28 @@ pipeline {
             }
         }
 
+
+    stage('Network Debug') {
+    steps {
+        sh '''
+          echo "=== NETWORK DEBUG ==="
+
+          echo "Container IP:"
+          hostname -i || true
+
+           echo "Routing table:"
+           ip route || true
+
+          echo "DNS:"
+          cat /etc/resolv.conf || true
+
+          echo "Testing API:"
+          curl -k --connect-timeout 5 \
+          https://192.168.49.2:8443/version || true
+        '''
+        }
+    }
+
    stage('Approval') {
     
     when{
