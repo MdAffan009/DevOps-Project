@@ -38,13 +38,20 @@ pipeline {
     stage('Network Debug') {
     steps {
         sh '''
-            echo "Testing Minikube API..."
+          echo "=== NETWORK DEBUG ==="
 
-            ping -c 3 192.168.49.2 || true
+          echo "Container IP:"
+          hostname -i || true
 
-            nc -zv 192.168.49.2 8443 || true
+           echo "Routing table:"
+           ip route || true
 
-            curl -k https://192.168.49.2:8443/version || true
+          echo "DNS:"
+          cat /etc/resolv.conf || true
+
+          echo "Testing API:"
+          curl -k --connect-timeout 5 \
+          https://192.168.49.2:8443/version || true
         '''
         }
     }
