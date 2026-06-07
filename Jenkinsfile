@@ -35,27 +35,6 @@ pipeline {
         }
 
 
-    stage('Network Debug') {
-    steps {
-        sh '''
-          echo "=== NETWORK DEBUG ==="
-
-          echo "Container IP:"
-          hostname -i || true
-
-           echo "Routing table:"
-           ip route || true
-
-          echo "DNS:"
-          cat /etc/resolv.conf || true
-
-          echo "Testing API:"
-          curl -k --connect-timeout 5 \
-          https://192.168.49.2:8443/version || true
-        '''
-        }
-    }
-
    stage('Approval') {
     
     when{
@@ -74,37 +53,28 @@ pipeline {
         }
 
       steps {
-
-        withCredentials([usernamePassword(
+            withCredentials([usernamePassword(
             credentialsId: 'github-creds',
             usernameVariable: 'GIT_USER',
             passwordVariable: 'GIT_PASS'
-        )]) {
-
-            sh '''
-            git config user.email "mdaffan0502@gmail.com"
-            git config user.name "MdAffan009"
-
-            git fetch origin +refs/heads/main:refs/remotes/origin/main
-            git fetch origin +refs/heads/test:refs/remotes/origin/test
-
-            if git ls-remote --exit-code --heads origin main; then
-                git checkout -B main origin/main
-            else
-                git checkout -b main
-            fi
-
-             git merge --no-ff -X theirs origin/test -m "Merge test into main"
-
-            git push https://${GIT_USER}:${GIT_PASS}@github.com/MdAffan009/DevOps-Project.git main
-            '''
+            )]) {
+              sh '''
+                 curl -X POST \
+                -H "Authorization: token ${GIT_PASS}" \
+                -H "Accept: application/vnd.github.v3+json" \
+                https://api.github.com/repos/MdAffan009/DevOps-Project/pulls \
+                -d '{
+                 "title": "CI Passed — Merge test into main",
+                 "head": "test",
+                 "base": "main",
+                 "body": "All tests passed. Ready for review."
+                 }' || echo "PR may already exist, skipping"
+             '''
             }
         }
     }
 
         //CD
-   
-
         stage('Docker build') {
             when {
                 branch 'main'
