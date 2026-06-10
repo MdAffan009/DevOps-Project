@@ -3,10 +3,35 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const path = require('path');
+const promClient = require('prom-client');
+
+
+//TO collect and monitor data
+const collectDefaultMetrics = promClient.collectDefaultMetrics;
+collectDefaultMetrics();
 
 const app = express();
 
 app.use(express.json());
+
+//To Track requests
+app.use((req, res, next) => {
+  const end = httpRequestDuration.startTimer();
+  res.on('finish', () => {
+    httpRequestCounter.inc({
+      method: req.method,
+      route: req.path,
+      status: res.statusCode
+    });
+    end({
+      method: req.method,
+      route: req.path,
+      status: res.statusCode
+    });
+  });
+  next();
+});
+
 app.use(express.static('public'));
 
 // User Model
@@ -15,6 +40,22 @@ const User = mongoose.model('User', new mongoose.Schema({
   email: String,
   password: String
 }));
+
+
+//Monitoring Metrics
+const httpRequestCounter = new promClient.Counter({
+  name: 'http_requests_total',
+  help: 'Total number of HTTP requests',
+  labelNames: ['method', 'route', 'status']
+});
+
+const httpRequestDuration = new promClient.Histogram({
+  name: 'http_request_duration_seconds',
+  help: 'Duration of HTTP requests in seconds',
+  labelNames: ['method', 'route', 'status'],
+  buckets: [0.01, 0.05, 0.1, 0.3, 0.5, 1, 2, 5]
+});
+
 
 // Routes
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public/login.html')));
@@ -39,6 +80,11 @@ app.post('/login', async (req, res) => {
   if (!match) return res.status(400).json({ message: 'Wrong password' });
   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
   res.json({ message: 'Login successful', token });
+});
+
+app.get('/metrics', async (req, res) => {
+  res.set('Content-Type', promClient.register.contentType);
+  res.send(await promClient.register.metrics());
 });
 
 module.exports = app;
