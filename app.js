@@ -14,6 +14,22 @@ const app = express();
 
 app.use(express.json());
 
+//Monitoring Metrics
+const httpRequestCounter = new promClient.Counter({
+  name: 'http_requests_total',
+  help: 'Total number of HTTP requests',
+  labelNames: ['method', 'route', 'status']
+});
+
+const httpRequestDuration = new promClient.Histogram({
+  name: 'http_request_duration_seconds',
+  help: 'Duration of HTTP requests in seconds',
+  labelNames: ['method', 'route', 'status'],
+  buckets: [0.01, 0.05, 0.1, 0.3, 0.5, 1, 2, 5]
+});
+
+
+
 //To Track requests
 app.use((req, res, next) => {
   const end = httpRequestDuration.startTimer();
@@ -40,21 +56,6 @@ const User = mongoose.model('User', new mongoose.Schema({
   email: String,
   password: String
 }));
-
-
-//Monitoring Metrics
-const httpRequestCounter = new promClient.Counter({
-  name: 'http_requests_total',
-  help: 'Total number of HTTP requests',
-  labelNames: ['method', 'route', 'status']
-});
-
-const httpRequestDuration = new promClient.Histogram({
-  name: 'http_request_duration_seconds',
-  help: 'Duration of HTTP requests in seconds',
-  labelNames: ['method', 'route', 'status'],
-  buckets: [0.01, 0.05, 0.1, 0.3, 0.5, 1, 2, 5]
-});
 
 
 // Routes
