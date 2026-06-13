@@ -116,18 +116,16 @@ pipeline {
         steps {
 
             withCredentials([
-               file(
-                    credentialsId: 'kubeconfig',
-                    variable: 'KUBECONFIG'
-                )
+               file(credentialsId: 'kubeconfig',variable: 'KUBECONFIG'),
+               file(credentialsId: 'helm-secret-values', variable: 'HELM_SECRETS')
             ]) {
 
             sh '''
                 kubectl config current-context
                 kubectl cluster-info
 
-                kubectl apply -f k8/
-                kubectl rollout status deployment/app-deployment
+                helm upgrade --install webapp ./chart -f chart/values.yaml -f $HELM_SECRETS
+                kubectl rollout status deployment/webapp-deployment
             '''
             }
         }
