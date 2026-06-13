@@ -1,0 +1,5 @@
+apiVersion: v2
+name: simple-webapp
+description: This is a simple webapp made to learn DevOps concept.
+version: 0.1.0
+appVersion: "1.0.0"

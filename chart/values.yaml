@@ -1,0 +1,33 @@
+#Replicas
+replicaCount: 2
+
+#Image
+image:
+  repository: robinparker995/devops-project
+  tag: latest
+  pullPolicy: Always
+
+#Service
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 3000
+
+#Pod Resources
+resources:
+  requests:
+    memory: "128Mi"
+    cpu: "250m"
+
+  limits:
+    memory: "256Mi"
+    cpu: "500m"
+
+#Ingress Domain
+ingress:
+  className: nginx
+  host: devops.local
+
+#Config
+config:
+  port: "3000"
