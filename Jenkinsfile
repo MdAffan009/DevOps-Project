@@ -48,7 +48,15 @@ pipeline {
                file(credentialsId: 'helm-secret-values', variable: 'HELM_SECRETS')
             ]) {
 
-            sh 'cat $HELM_SECRETS'
+            sh '''
+                cat $HELM_SECRETS
+                kubectl config current-context
+                kubectl cluster-info
+
+                helm upgrade --install webapp ./chart -f chart/values.yaml -f $HELM_SECRETS
+                kubectl rollout status deployment/webapp-deployment
+
+            '''
             }
         }
         }

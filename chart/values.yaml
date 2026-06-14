@@ -31,3 +31,8 @@ ingress:
 #Config
 config:
   port: "3000"
+
+#Secret Fallback
+secret:
+  MONGO_URI: ""
+  JWT_SECRET: ""
