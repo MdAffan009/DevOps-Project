@@ -35,35 +35,6 @@ pipeline {
         }
 
 
-        stage('Debug') {
-
-            when {
-                branch 'test'
-            }
-
-            steps {
-
-            withCredentials([
-               file(credentialsId: 'kubeconfig',variable: 'KUBECONFIG'),
-               file(credentialsId: 'helm-secret-values', variable: 'HELM_SECRETS')
-            ]) {
-
-            sh '''
-                kubectl config current-context
-                kubectl cluster-info
-
-                echo "Secrets file path: $HELM_SECRETS"
-                ls -la $HELM_SECRETS
-                cat $HELM_SECRETS
-                helm upgrade --install webapp ./chart -f chart/values.yaml -f $HELM_SECRETS
-               
-                kubectl rollout status deployment/webapp-deployment
-
-            '''
-            }
-        }
-        }
-
    stage('Approval') {
     
     when{
