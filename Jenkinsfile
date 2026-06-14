@@ -34,6 +34,25 @@ pipeline {
             }
         }
 
+
+        stage('Debug') {
+
+            when {
+                branch 'test'
+            }
+
+            steps {
+
+            withCredentials([
+               file(credentialsId: 'kubeconfig',variable: 'KUBECONFIG'),
+               file(credentialsId: 'helm-secret-values', variable: 'HELM_SECRETS')
+            ]) {
+
+            sh 'cat $HELM_SECRETS'
+            }
+        }
+        }
+
    stage('Approval') {
     
     when{
