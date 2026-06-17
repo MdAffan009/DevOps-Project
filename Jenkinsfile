@@ -60,9 +60,8 @@ pipeline {
 
     grep -A10 "kind: Secret" rendered.yaml || echo "No Secret resources found in rendered manifest"
 
-    kubectl get pods -l app=webapp -o wide
-kubectl describe deployment webapp-deployment
-kubectl logs -l app=webapp --tail=50 --previous
+     kubectl rollout status deployment/webapp-deployment
+
 '''
             }
         }
