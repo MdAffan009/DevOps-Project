@@ -58,7 +58,7 @@ pipeline {
         -f chart/values.yaml \
         -f $HELM_SECRETS > rendered.yaml
 
-    grep -A10 "kind: Secret" rendered.yaml
+    grep -A10 "kind: Secret" rendered.yaml || echo "No Secret resources found in rendered manifest"
 
     kubectl rollout status deployment/webapp-deployment
 '''
