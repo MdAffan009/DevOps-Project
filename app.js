@@ -29,7 +29,6 @@ const httpRequestDuration = new promClient.Histogram({
 });
 
 
-
 //To Track requests
 app.use((req, res, next) => {
   const end = httpRequestDuration.startTimer();
@@ -75,17 +74,25 @@ if (!username || !email || !password)
 
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
+
   const user = await User.findOne({ email });
+
   if (!user) return res.status(400).json({ message: 'User not found' });
   const match = await bcrypt.compare(password, user.password);
+
   if (!match) return res.status(400).json({ message: 'Wrong password' });
   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+
   res.json({ message: 'Login successful', token });
 });
 
 app.get('/metrics', async (req, res) => {
   res.set('Content-Type', promClient.register.contentType);
   res.send(await promClient.register.metrics());
+});
+
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok'})
 });
 
 module.exports = app;
