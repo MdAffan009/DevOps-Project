@@ -48,20 +48,20 @@ pipeline {
                file(credentialsId: 'helm-secret-values', variable: 'HELM_SECRETS')
             ]) {
 
-            sh '''
-                kubectl config current-context
-                kubectl cluster-info
+           sh '''
+    kubectl config current-context
+    kubectl cluster-info
 
-                helm upgrade --install webapp ./chart -f chart/values.yaml -f $HELM_SECRETS
-    
-                helm template webapp ./chart \
-                    -f chart/values.yaml \
-                    -f chart/values.secret.yaml > rendered.yaml
+    helm upgrade --install webapp ./chart -f chart/values.yaml -f $HELM_SECRETS
 
-                grep -A10 "kind: Secret" rendered.yaml
+    helm template webapp ./chart \
+        -f chart/values.yaml \
+        -f $HELM_SECRETS > rendered.yaml
 
-                kubectl rollout status deployment/webapp-deployment
-            '''
+    grep -A10 "kind: Secret" rendered.yaml
+
+    kubectl rollout status deployment/webapp-deployment
+'''
             }
         }
     }
