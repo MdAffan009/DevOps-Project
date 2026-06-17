@@ -35,38 +35,6 @@ pipeline {
         }
 
 
-    stage('Debug') {
-
-        when {
-          branch 'test'
-        }
-
-        steps {
-
-            withCredentials([
-               file(credentialsId: 'kubeconfig',variable: 'KUBECONFIG'),
-               file(credentialsId: 'helm-secret-values', variable: 'HELM_SECRETS')
-            ]) {
-
-           sh '''
-    kubectl config current-context
-    kubectl cluster-info
-
-    helm upgrade --install webapp ./chart -f chart/values.yaml -f $HELM_SECRETS
-
-    helm template webapp ./chart \
-        -f chart/values.yaml \
-        -f $HELM_SECRETS > rendered.yaml
-
-    grep -A10 "kind: Secret" rendered.yaml || echo "No Secret resources found in rendered manifest"
-
-     kubectl rollout status deployment/webapp-deployment
-
-'''
-            }
-        }
-    }
-
    stage('Approval') {
     
     when{
