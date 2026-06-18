@@ -36,7 +36,7 @@ spec:
 
          readinessProbe: 
             httpGet:
-              path: /health
+              path: /health/ready
               port: {{ .Values.service.targetPort }}
 
             initialDelaySeconds: 10
@@ -46,7 +46,7 @@ spec:
 
          livenessProbe:
             httpGet:
-              path: /health
+              path: /health/live
               port: {{ .Values.service.targetPort }}
 
             initialDelaySeconds: 15

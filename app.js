@@ -91,8 +91,23 @@ app.get('/metrics', async (req, res) => {
   res.send(await promClient.register.metrics());
 });
 
-app.get('/health', (req, res) => {
+app.get('/health/live', (req, res) => {
   res.status(200).json({ status: 'ok'})
+});
+
+app.get('/health/ready', (req, res) => {
+
+  if (mongoose.connection.readyState === 1) {
+      return res.status(200).json({
+      status: 'ready',
+      mongodb: 'connected'
+    });
+  }
+
+  return res.status(503).json({
+    status: 'not ready',
+     mongodb: 'disconnected'
+  });
 });
 
 module.exports = app;
