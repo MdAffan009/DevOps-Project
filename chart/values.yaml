@@ -23,6 +23,19 @@ resources:
     memory: "256Mi"
     cpu: "500m"
 
+
+#Cluster Resource Quota
+quota:
+  requests:
+    cpu: 2
+    memory: 2Gi
+
+  limits:
+    cpu: 4
+    memory: 4Gi
+
+  maxpods: 8
+
 #Ingress Domain
 ingress:
   className: nginx
