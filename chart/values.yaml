@@ -36,6 +36,11 @@ quota:
 
   maxpods: 8
 
+#Hotrizontal Pod Autoscaler
+minReplicas: 2
+maxReplicas: 5
+averageUtilization: 50
+
 #Ingress Domain
 ingress:
   className: nginx
