@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: webapp
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    - repoURL: https://github.com/MdAffan009/DevOps-Project.git
+      targetRevision: HEAD
+      path: chart
+      helm:
+        releaseName: webapp
+        valueFiles:
+          - $values/apps/webapp/values.yaml
+    - repoURL: https://github.com/MdAffan009/devops-config.git
+      targetRevision: HEAD
+      ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
