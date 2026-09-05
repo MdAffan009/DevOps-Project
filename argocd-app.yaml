@@ -3,9 +3,13 @@ kind: Application
 metadata:
   name: webapp
   namespace: argocd
+
 spec:
   project: default
+
   sources:
+
+    # 1. Helm chart
     - repoURL: https://github.com/MdAffan009/DevOps-Project.git
       targetRevision: HEAD
       path: chart
@@ -13,12 +17,21 @@ spec:
         releaseName: webapp
         valueFiles:
           - $values/apps/webapp/values.yaml
+
+    # 2. Helm values repository
     - repoURL: https://github.com/MdAffan009/devops-config.git
       targetRevision: HEAD
       ref: values
+
+    # 3. Kubernetes manifests from config repository
+    - repoURL: https://github.com/MdAffan009/devops-config.git
+      targetRevision: HEAD
+      path: apps/webapp/manifests
+
   destination:
     server: https://kubernetes.default.svc
     namespace: default
+
   syncPolicy:
     automated:
       prune: true
