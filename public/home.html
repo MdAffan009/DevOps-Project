@@ -1,12 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Home</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet" />
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       min-height: 100vh;
@@ -20,9 +29,17 @@
     }
 
     @keyframes gradShift {
-      0%   { background-position: 0% 50%; }
-      50%  { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
     }
 
     .blob {
@@ -33,13 +50,43 @@
       animation: float 8s ease-in-out infinite;
       pointer-events: none;
     }
-    .blob1 { width: 400px; height: 400px; background: #54a0ff; top: -100px; left: -100px; }
-    .blob2 { width: 300px; height: 300px; background: #ff9ff3; bottom: -80px; right: -80px; animation-delay: 3s; }
-    .blob3 { width: 250px; height: 250px; background: #feca57; top: 40%; left: 60%; animation-delay: 5s; }
+
+    .blob1 {
+      width: 400px;
+      height: 400px;
+      background: #54a0ff;
+      top: -100px;
+      left: -100px;
+    }
+
+    .blob2 {
+      width: 300px;
+      height: 300px;
+      background: #ff9ff3;
+      bottom: -80px;
+      right: -80px;
+      animation-delay: 3s;
+    }
+
+    .blob3 {
+      width: 250px;
+      height: 250px;
+      background: #feca57;
+      top: 40%;
+      left: 60%;
+      animation-delay: 5s;
+    }
 
     @keyframes float {
-      0%, 100% { transform: translateY(0) scale(1); }
-      50%       { transform: translateY(-30px) scale(1.05); }
+
+      0%,
+      100% {
+        transform: translateY(0) scale(1);
+      }
+
+      50% {
+        transform: translateY(-30px) scale(1.05);
+      }
     }
 
     nav {
@@ -47,9 +94,9 @@
       align-items: center;
       justify-content: space-between;
       padding: 20px 40px;
-      background: rgba(255,255,255,0.05);
+      background: rgba(255, 255, 255, 0.05);
       backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(255,255,255,0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       position: sticky;
       top: 0;
       z-index: 100;
@@ -67,8 +114,8 @@
 
     .logout-btn {
       padding: 10px 22px;
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: 10px;
       color: #fff;
       font-family: 'DM Sans', sans-serif;
@@ -79,8 +126,8 @@
     }
 
     .logout-btn:hover {
-      background: rgba(255,107,107,0.2);
-      border-color: rgba(255,107,107,0.4);
+      background: rgba(255, 107, 107, 0.2);
+      border-color: rgba(255, 107, 107, 0.4);
       color: #ffcaca;
     }
 
@@ -99,7 +146,10 @@
     }
 
     @keyframes slideUp {
-      to { opacity: 1; transform: translateY(0); }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .badge {
@@ -107,11 +157,11 @@
       align-items: center;
       gap: 8px;
       padding: 6px 16px;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: 100px;
       font-size: 13px;
-      color: rgba(255,255,255,0.7);
+      color: rgba(255, 255, 255, 0.7);
       margin-bottom: 28px;
       letter-spacing: 1px;
       text-transform: uppercase;
@@ -119,15 +169,25 @@
     }
 
     .badge span {
-      width: 6px; height: 6px;
+      width: 6px;
+      height: 6px;
       background: #54ff9f;
       border-radius: 50%;
       animation: pulse 2s ease infinite;
     }
 
     @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50%       { opacity: 0.5; transform: scale(1.5); }
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.5;
+        transform: scale(1.5);
+      }
     }
 
     h1 {
@@ -147,7 +207,7 @@
 
     .hero-sub {
       font-size: 18px;
-      color: rgba(255,255,255,0.55);
+      color: rgba(255, 255, 255, 0.55);
       font-weight: 300;
       max-width: 460px;
       line-height: 1.6;
@@ -170,8 +230,8 @@
     }
 
     .card {
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 20px;
       padding: 28px 24px;
       transition: transform 0.3s ease, background 0.3s ease;
@@ -179,7 +239,7 @@
 
     .card:hover {
       transform: translateY(-6px);
-      background: rgba(255,255,255,0.11);
+      background: rgba(255, 255, 255, 0.11);
     }
 
     .card-icon {
@@ -197,7 +257,7 @@
 
     .card p {
       font-size: 14px;
-      color: rgba(255,255,255,0.5);
+      color: rgba(255, 255, 255, 0.5);
       line-height: 1.6;
       font-weight: 300;
     }
@@ -216,9 +276,9 @@
 
       text-align: center;
 
-      border-top: 1px solid rgba(255,255,255,0.08);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
 
-      background: rgba(0,0,0,0.15);
+      background: rgba(0, 0, 0, 0.15);
 
       backdrop-filter: blur(10px);
 
@@ -235,7 +295,7 @@
     }
 
     .footer-sub {
-      color: rgba(255,255,255,0.5);
+      color: rgba(255, 255, 255, 0.5);
       font-size: 14px;
       margin-bottom: 18px;
     }
@@ -248,7 +308,7 @@
     }
 
     .footer-links a {
-      color: rgba(255,255,255,0.7);
+      color: rgba(255, 255, 255, 0.7);
       text-decoration: none;
       font-size: 14px;
 
@@ -260,6 +320,7 @@
     }
   </style>
 </head>
+
 <body>
   <div class="blob blob1"></div>
   <div class="blob blob2"></div>
@@ -272,7 +333,7 @@
 
   <div class="hero">
     <div class="badge"><span></span> You're logged in</div>
-    <h1>Welcome to your<br/><span class="gradient-text">Dashboard</span></h1>
+    <h1>Welcome to your<br /><span class="gradient-text">Dashboard</span></h1>
     <p class="hero-sub">Your app is live, your database is connected, and you're ready to ship.</p>
   </div>
 
@@ -295,6 +356,33 @@
       <h3>CI/CD</h3>
       <p>Automate your builds and deployments with a solid pipeline.</p>
     </div>
+
+    ```html
+    <!-- Prometheus + Grafana -->
+    <div class="card">
+      <div class="card-accent" style="background: linear-gradient(90deg, #ff6b6b, #feca57);"></div>
+      <div class="card-icon">📊</div>
+      <h3>Prometheus + Grafana</h3>
+      <p>Monitor your application and Kubernetes infrastructure with metrics, alerts, and powerful dashboards.</p>
+    </div>
+
+    <!-- Loki -->
+    <div class="card">
+      <div class="card-accent" style="background: linear-gradient(90deg, #48dbfb, #54a0ff);"></div>
+      <div class="card-icon">📝</div>
+      <h3>Loki</h3>
+      <p>Collect, aggregate, and search logs from your application and Kubernetes workloads in one place.</p>
+    </div>
+
+    <!-- Argo CD -->
+    <div class="card">
+      <div class="card-accent" style="background: linear-gradient(90deg, #ff9ff3, #c471ed);"></div>
+      <div class="card-icon">🚀</div>
+      <h3>Argo CD</h3>
+      <p>Continuously synchronize your Kubernetes applications with the desired state defined in Git.</p>
+    </div>
+    ```
+
   </div>
 
   <br>
@@ -327,4 +415,5 @@
     }
   </script>
 </body>
+
 </html>
